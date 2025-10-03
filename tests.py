@@ -1,4 +1,5 @@
 from main import BooksCollector
+import pytest  
 
 # класс TestBooksCollector объединяет набор тестов, которыми мы покрываем наше приложение BooksCollector
 # обязательно указывать префикс Test
@@ -17,8 +18,8 @@ class TestBooksCollector:
         collector.add_new_book('Что делать, если ваш кот хочет вас убить')
 
         # проверяем, что добавилось именно две
-        # словарь books_rating, который нам возвращает метод get_books_rating, имеет длину 2
-        assert len(collector.get_books_rating()) == 2
+        # словарь books_genre, который нам возвращает метод get_books_genre, имеет длину 2
+        assert len(collector.get_books_genre()) == 2
 
     # напиши свои тесты ниже
     # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
@@ -91,12 +92,30 @@ class TestBooksCollector:
         assert isinstance(books_genre, dict)
         assert "Гарри Поттер" in books_genre
 
+    # Параметризованный тест: проверка граничных значений длины имени книги
+    @pytest.mark.parametrize("book_name, expected", [
+        ("", False),                    # пустая строка — невалидно
+        ("a" * 1, True),               # минимальная длина — валидно
+        ("a" * 40, True),              # максимальная длина — валидно
+        ("a" * 41, False),             # на 1 символ больше — невалидно
+    ])
+    def test_add_new_book_boundary_names(self, book_name, expected):
+        collector = BooksCollector()
+        collector.add_new_book(book_name)
+        if expected:
+            assert book_name in collector.books_genre
+        else:
+            assert book_name not in collector.books_genre
+
     def test_get_books_for_children_excludes_age_rated_genres(self):
         collector = BooksCollector()
+        # Добавляем книги с возрастными жанрами
         collector.add_new_book("Книга ужасов")
         collector.set_book_genre("Книга ужасов", "Ужасы")
         collector.add_new_book("Книга детектива")
         collector.set_book_genre("Книга детектива", "Детективы")
+
+        # Добавляем книги без возрастного рейтинга
         collector.add_new_book("Книга фантастики")
         collector.set_book_genre("Книга фантастики", "Фантастика")
         collector.add_new_book("Мультик")
@@ -105,10 +124,12 @@ class TestBooksCollector:
         collector.set_book_genre("Комедия", "Комедии")
 
         children_books = collector.get_books_for_children()
-        # Проверяем, что возрастные жанры исключены
+
+        # Негативный сценарий: возрастные жанры исключены
         assert "Книга ужасов" not in children_books
         assert "Книга детектива" not in children_books
-        # Проверяем, что допустимые жанры есть
+
+        # Позитивный сценарий: допустимые жанры включены
         assert "Книга фантастики" in children_books
         assert "Мультик" in children_books
         assert "Комедия" in children_books
