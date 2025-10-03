@@ -1,1 +1,24 @@
-# qa_python
+# Тесты для класса BooksCollector
+
+## Реализованные тесты:
+
+- `test_add_new_book_adds_book_with_valid_name`
+- `test_add_new_book_does_not_add_book_with_empty_name`
+- `test_add_new_book_does_not_add_book_with_long_name`
+- `test_add_new_book_adds_only_one_instance_of_book`
+- `test_set_book_genre_sets_genre_for_existing_book`
+- `test_set_book_genre_does_not_set_genre_for_nonexistent_book`
+- `test_set_book_genre_does_not_set_invalid_genre`
+- `test_get_book_genre_returns_correct_genre`
+- `test_get_books_with_specific_genre_returns_correct_list`
+- `test_get_books_with_specific_genre_returns_empty_list_if_no_books`
+- `test_get_books_genre_returns_current_dictionary`
+- `test_get_books_for_children_excludes_age_rated_genres` (параметризованный)
+- `test_add_book_in_favorites_adds_book_if_exists_in_books_genre`
+- `test_add_book_in_favorites_does_not_add_book_if_not_in_books_genre`
+- `test_add_book_in_favorites_does_not_add_duplicate`
+- `test_delete_book_from_favorites_removes_book_if_exists`
+- `test_delete_book_from_favorites_does_nothing_if_book_not_in_favorites`
+- `test_get_list_of_favorites_books_returns_correct_list`
+
+Все тесты проходят, покрывают все основные сценарии использования класса.
