@@ -1,5 +1,5 @@
 from main import BooksCollector
-import pytest  
+import pytest
 
 # класс TestBooksCollector объединяет набор тестов, которыми мы покрываем наше приложение BooksCollector
 # обязательно указывать префикс Test
@@ -92,20 +92,29 @@ class TestBooksCollector:
         assert isinstance(books_genre, dict)
         assert "Гарри Поттер" in books_genre
 
-    # Параметризованный тест: проверка граничных значений длины имени книги
-    @pytest.mark.parametrize("book_name, expected", [
-        ("", False),                    # пустая строка — невалидно
-        ("a" * 1, True),               # минимальная длина — валидно
-        ("a" * 40, True),              # максимальная длина — валидно
-        ("a" * 41, False),             # на 1 символ больше — невалидно
-    ])
-    def test_add_new_book_boundary_names(self, book_name, expected):
+    # 🆕 Отдельные тесты вместо параметризованного с if/else
+
+    def test_add_new_book_valid_names(self):
+        """Проверка добавления книг с валидными именами"""
         collector = BooksCollector()
-        collector.add_new_book(book_name)
-        if expected:
-            assert book_name in collector.books_genre
-        else:
-            assert book_name not in collector.books_genre
+        valid_names = [
+            "a" * 1,   # минимальная длина
+            "a" * 40,  # максимальная длина
+        ]
+        for name in valid_names:
+            collector.add_new_book(name)
+            assert name in collector.books_genre
+
+    def test_add_new_book_invalid_names(self):
+        """Проверка, что книги с невалидными именами не добавляются"""
+        collector = BooksCollector()
+        invalid_names = [
+            "",        # пустая строка
+            "a" * 41,  # больше 40 символов
+        ]
+        for name in invalid_names:
+            collector.add_new_book(name)
+            assert name not in collector.books_genre
 
     def test_get_books_for_children_excludes_age_rated_genres(self):
         collector = BooksCollector()
