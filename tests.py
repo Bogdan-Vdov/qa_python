@@ -92,29 +92,27 @@ class TestBooksCollector:
         assert isinstance(books_genre, dict)
         assert "Гарри Поттер" in books_genre
 
-    # 🆕 Отдельные тесты вместо параметризованного с if/else
+    # ✅ Параметризованные тесты: по 2 запуска на каждый тип ГЗ
 
-    def test_add_new_book_valid_names(self):
+    @pytest.mark.parametrize("book_name", [
+        "a" * 1,   # минимальная длина — валидно
+        "a" * 40,  # максимальная длина — валидно
+    ])
+    def test_add_new_book_valid_names(self, book_name):
         """Проверка добавления книг с валидными именами"""
         collector = BooksCollector()
-        valid_names = [
-            "a" * 1,   # минимальная длина
-            "a" * 40,  # максимальная длина
-        ]
-        for name in valid_names:
-            collector.add_new_book(name)
-            assert name in collector.books_genre
+        collector.add_new_book(book_name)
+        assert book_name in collector.books_genre
 
-    def test_add_new_book_invalid_names(self):
+    @pytest.mark.parametrize("book_name", [
+        "",        # пустая строка — невалидно
+        "a" * 41,  # больше 40 символов — невалидно
+    ])
+    def test_add_new_book_invalid_names(self, book_name):
         """Проверка, что книги с невалидными именами не добавляются"""
         collector = BooksCollector()
-        invalid_names = [
-            "",        # пустая строка
-            "a" * 41,  # больше 40 символов
-        ]
-        for name in invalid_names:
-            collector.add_new_book(name)
-            assert name not in collector.books_genre
+        collector.add_new_book(book_name)
+        assert book_name not in collector.books_genre
 
     def test_get_books_for_children_excludes_age_rated_genres(self):
         collector = BooksCollector()

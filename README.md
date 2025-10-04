@@ -14,8 +14,8 @@
 - `test_get_books_with_specific_genre_returns_correct_list` — получение списка книг по жанру
 - `test_get_books_with_specific_genre_returns_empty_list_if_no_books` — получение пустого списка, если книг нет
 - `test_get_books_genre_returns_current_dictionary` — получение текущего словаря книг с жанрами
-- `test_add_new_book_valid_names` — проверка добавления книг с валидными именами (1–40 символов)
-- `test_add_new_book_invalid_names` — проверка, что книги с невалидными именами (пустое или >40 символов) не добавляются
+- `test_add_new_book_valid_names` (параметризованный) — проверка добавления книг с валидными именами (1 и 40 символов)
+- `test_add_new_book_invalid_names` (параметризованный) — проверка, что книги с невалидными именами (пустое и 41 символ) не добавляются
 - `test_get_books_for_children_excludes_age_rated_genres` — проверка, что возрастные жанры исключены из списка детских книг
 - `test_add_book_in_favorites_adds_book_if_exists_in_books_genre` — добавление книги в избранное, если она существует в списке книг
 - `test_add_book_in_favorites_does_not_add_book_if_not_in_books_genre` — книга не добавляется в избранное, если её нет в списке книг
